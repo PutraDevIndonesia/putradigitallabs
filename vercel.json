@@ -2,12 +2,17 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/:match*",
+      "source": "/api/(.*)",
       "destination": "/server/api/index.js"
     },
     {
       "source": "/(.*)",
       "destination": "/client/dist/$1"
     }
-  ]
+  ],
+  "functions": {
+    "server/api/index.js": {
+      "includeFiles": "server/src/**"
+    }
+  }
 }
