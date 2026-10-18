@@ -103,12 +103,16 @@ app.use((error, req, res, _next) => {
   return res.status(500).json({ error: 'internal_error' })
 })
 
-app.listen(PORT, () => {
-  console.log(`API berjalan di http://localhost:${PORT}`)
-  if (!isConfigured()) {
-    console.warn('FIREBASE_DATABASE_URL belum diisi. Endpoint data akan menolak permintaan sampai .env lengkap.')
-  }
-  if (!authIsConfigured()) {
-    console.warn('Kredensial admin belum lengkap. Endpoint /api/admin/login belum bisa dipakai.')
-  }
-})
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`API berjalan di http://localhost:${PORT}`)
+    if (!isConfigured()) {
+      console.warn('FIREBASE_DATABASE_URL belum diisi. Endpoint data akan menolak permintaan sampai .env lengkap.')
+    }
+    if (!authIsConfigured()) {
+      console.warn('Kredensial admin belum lengkap. Endpoint /api/admin/login belum bisa dipakai.')
+    }
+  })
+}
+
+export default app
